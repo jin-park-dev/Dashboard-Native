@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Picker, View} from 'react-native';
+import { Picker, View, Text } from 'react-native';
+import { pickerUpdate } from '../../actions/action_PomodoroPickerForm';
 import { connect } from 'react-redux';
 
 class PomodoroPicker extends Component {
@@ -7,20 +8,60 @@ class PomodoroPicker extends Component {
   //   return <ListItem library={library}/>
   // }
 
+  // state = {
+  //   tasks: [],
+  //   selectedTask: "6",
+  // };
+
+  renderTaskList() {
+    // console.log(this.props.kanbanBoard.kanbanBoardAll[0].tasks);
+    let tasks = this.props.kanbanBoard.kanbanBoardAll[0].tasks;
+
+    // tasks.entries.map(([key, value]) => {
+    //   console.log(key)
+    // })
+
+    let pickerList = [];
+
+    Object.entries(tasks).map(([key, value]) => {
+      let pickerItem = <Picker.Item label={value.name} value={key} key={key} />;
+      pickerList.push(pickerItem)
+    });
+
+    return pickerList;
+  }
+
   render() {
 
+    // console.log(this.props.kanbanBoard);
+    // console.log("this.props.selectedTask");
+    // console.log(this.props.selectedTask);
+
     const { cardStyle, pickerStyle } = styles;
+
+    if (this.props.kanbanBoard.loading.tasks === true) {
+      return (
+        <View style={cardStyle}>
+          <Picker
+            style={pickerStyle}
+          >
+            <Picker.Item label="Loading..." value="Monday" />
+          </Picker>
+        </View>
+      )}
 
     return (
       <View style={cardStyle}>
         <Picker
           style={pickerStyle}
-          // selectedValue={this.props.shift}
-          // onValueChange={value => this.props.employeeUpdate({ prop: 'shift', value })}
+          selectedValue={this.props.selectedTask}
+          // onValueChange={value => this.setState({ selectedTask: value })}
+          onValueChange={selectedValue => this.props.pickerUpdate(selectedValue)}
         >
-          <Picker.Item label="Dashboard 2" value="Monday" />
-          <Picker.Item label="Udemy React Native" value="Tuesday" />
-          <Picker.Item label="Dashboard Native" value="Wednesday" />
+          {this.renderTaskList()}
+          {/*<Picker.Item label="Dashboard 2" value="Monday" />*/}
+          {/*<Picker.Item label="Udemy React Native" value="Tuesday" />*/}
+          {/*<Picker.Item label="Dashboard Native" value="Wednesday" />*/}
         </Picker>
       </View>
     )
@@ -41,8 +82,18 @@ const styles = {
   }
 };
 
-// const mapStateToProps = state => {
-//   return { libraries: state.libraries };
-// };
+const mapStateToProps = state => {
+  return {
+    kanbanBoard: state.kanbanBoard,
+    tasks: state.pomodoroPickerForm.tasks,
+    selectedTask: state.pomodoroPickerForm.selectedTask,
+  };
+};
 
-export default connect(null)(PomodoroPicker);
+function mapDispatchToProps(dispatch) {
+  return {
+    pickerUpdate: (selectedValue) => dispatch(pickerUpdate(selectedValue)),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PomodoroPicker);

@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import {Platform, StyleSheet, Text, View, Picker, Dimensions} from 'react-native';
 import {PomodoroClock} from "./pomodoro";
-import PickerViewExample from "antd-mobile-rn/lib/picker-view/demo/basic.native";
-import {CardSection} from "./common";
 import PomodoroPicker from "./pomodoro/PomodoroPicker";
 import PomodoroCounter from "./pomodoro/PomodoroCounter";
 import PomodoroCounterText from "./pomodoro/PomodoroCounterText";
