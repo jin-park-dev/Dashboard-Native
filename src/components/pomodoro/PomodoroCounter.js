@@ -48,8 +48,8 @@ const styles = {
     // width: '100%',
     // // alignItems: 'flex-start',
     // justifyContent: 'center',
-    backgroundColor: "blue",
-    // alignItems:'center'
+    // backgroundColor: "blue",
+    // alignItems:'center',
   },
   cardStyle: {
     flex: 1,
@@ -60,7 +60,8 @@ const styles = {
     // justifyContent: 'space-between',
     // borderRadius: 15,
 
-    // marginLeft: 25,
+    // Little janky to do it this way but gets result done under mobile. Will be issue under tablet.
+    marginLeft: 25,
     // marginRight: 25,
 
     // marginBottom: 25,

@@ -1,0 +1,94 @@
+import React, { Component } from 'react';
+import { Text, View } from 'react-native';
+import { connect } from 'react-redux';
+import { Card, CardSection, Input, Button, Spinner } from './common';
+
+class LoginFormContainer extends Component {
+  onEmailChange(text) {
+    // this.props.emailChanged(text);
+  }
+
+  onPasswordChange(text) {
+    // this.props.passwordChanged(text);
+  }
+
+  onButtonPress() {
+    const { email, password } = this.props;
+
+    // this.props.loginUser({ email, password });
+  }
+
+  renderButton() {
+    if (this.props.loading) {
+      return <Spinner size="large" />;
+    }
+
+    return (
+      <Button onPress={this.onButtonPress.bind(this)}>
+        Login
+      </Button>
+    );
+  }
+
+  render() {
+    return (
+      <View style={styles.containerStyle}>
+        <CardSection>
+          <Input
+            label="Email"
+            placeholder="email@gmail.com"
+            onChangeText={this.onEmailChange.bind(this)}
+            value="temp..."
+          />
+        </CardSection>
+
+        <CardSection>
+          <Input
+            secureTextEntry
+            label="Password"
+            placeholder="password"
+            onChangeText={this.onPasswordChange.bind(this)}
+            value="temp..."
+          />
+        </CardSection>
+
+        <Text style={styles.errorTextStyle}>
+          {/*{this.props.error}*/}
+        </Text>
+
+        <CardSection>
+          {this.renderButton()}
+        </CardSection>
+      </View>
+    );
+  }
+}
+
+const styles = {
+  errorTextStyle: {
+    fontSize: 20,
+    alignSelf: 'center',
+    color: 'red'
+  },
+  containerStyle: {
+    flex: 3,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    backgroundColor: '#716F77',
+  },
+  cardStyle: {
+
+  }
+};
+
+// const mapStateToProps = ({ auth }) => {
+//   const { email, password, error, loading } = auth;
+//
+//   return { email, password, error, loading };
+// };
+//
+// export default connect(mapStateToProps, {
+//   emailChanged, passwordChanged, loginUser
+// })(LoginForm);
+
+export default LoginFormContainer;

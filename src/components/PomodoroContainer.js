@@ -44,7 +44,6 @@ class PomodoroContainer extends Component {
 
         <PomodoroCounterText />
 
-
       </View>
     );
   }

@@ -28,7 +28,7 @@ const styles={
     lineHeight: 23,
     flex: 2,
 
-    borderColor: '#8ab7ff',
+    borderColor: '#ff8a8a',
     borderWidth: 1,
     // height: 20,
   },
