@@ -2,11 +2,33 @@ import React, { Component } from 'react';
 import {FlatList, Picker, View, Text} from 'react-native';
 import { connect } from 'react-redux';
 import {CardSection} from "../common";
+import moment from "moment";
+import { fetchPomodoroCount } from "../../actions/action_Pomodoro";
 
 class PomodoroCounter extends Component {
-  // renderItem(library) {
-  //   return <ListItem library={library}/>
-  // }
+
+  componentWillMount() {
+    this.handlePomodoroCount()
+  }
+
+  handlePomodoroCount() {
+    // Take it from UI, this is temp
+    let start = moment().format('YYYY-MM-DD');
+    let finish = moment().add(1,'d').format('YYYY-MM-DD');
+    this.props.fetchPomodoroCount(start, finish);
+  }
+
+  renderPomodoroIcon() {
+    const { pomoBoxStyle, pomoBoxWrapperStyle } = styles;
+    let pomodoroIcons = [];
+    let pomodoroCount = parseInt(this.props.pomodoro);
+
+    for (let i=0; i < pomodoroCount; i++) {
+      let currentIcon = <View key={i} style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>
+      pomodoroIcons.push(currentIcon)
+    }
+    return pomodoroIcons
+  }
 
   render() {
 
@@ -14,26 +36,30 @@ class PomodoroCounter extends Component {
 
     return (
       <View style={containerStyle}>
+        {/*<View style={cardStyle}>*/}
+        {/*<View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>*/}
+        {/*<View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>*/}
+        {/*<View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>*/}
+        {/*<View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>*/}
+        {/*<View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>*/}
+        {/*/!*</View>*!/*/}
+        {/*/!*<View style={cardStyle}>*!/*/}
+        {/*<View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>*/}
+        {/*<View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>*/}
+        {/*<View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>*/}
+        {/*<View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>*/}
+        {/*<View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>*/}
+        {/*/!*</View>*!/*/}
+        {/*/!*<View style={cardStyle}>*!/*/}
+        {/*<View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>*/}
+        {/*<View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>*/}
+        {/*/!*<View style={pomoBoxStyle}></View>*!/*/}
+        {/*/!*<View style={pomoBoxStyle}></View>*!/*/}
+        {/*/!*<View style={pomoBoxStyle}></View>*!/*/}
+        {/*</View>*/}
+
         <View style={cardStyle}>
-          <View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>
-          <View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>
-          <View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>
-          <View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>
-          <View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>
-        {/*</View>*/}
-        {/*<View style={cardStyle}>*/}
-          <View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>
-          <View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>
-          <View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>
-          <View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>
-          <View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>
-        {/*</View>*/}
-        {/*<View style={cardStyle}>*/}
-          <View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>
-          <View style={pomoBoxWrapperStyle}><View style={pomoBoxStyle}></View></View>
-          {/*<View style={pomoBoxStyle}></View>*/}
-          {/*<View style={pomoBoxStyle}></View>*/}
-          {/*<View style={pomoBoxStyle}></View>*/}
+          {this.renderPomodoroIcon()}
         </View>
 
       </View>
@@ -88,8 +114,17 @@ const styles = {
   }
 };
 
-// const mapStateToProps = state => {
-//   return { libraries: state.libraries };
-// };
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchPomodoroCount: (start, finish) => dispatch(fetchPomodoroCount(start, finish)),
+  };
+}
 
-export default connect(null)(PomodoroCounter);
+function mapStateToProps(state) {
+  return {
+    pomodoro: state.stats.pomodoro,
+    pomodoroLoading: state.stats.loading.pomodoro,
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PomodoroCounter);
