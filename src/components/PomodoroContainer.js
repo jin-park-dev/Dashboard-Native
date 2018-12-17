@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Picker, Dimensions} from 'react-native';
-import {PomodoroClock} from "./pomodoro";
+import {Platform, StyleSheet, Text, View, Picker, Dimensions, TouchableOpacity} from 'react-native';
+// import {PomodoroClock} from "./pomodoro";
+import PomodoroClock from "./pomodoro/PomodoroClock";
 import PomodoroPicker from "./pomodoro/PomodoroPicker";
 import PomodoroCounter from "./pomodoro/PomodoroCounter";
 import PomodoroCounterText from "./pomodoro/PomodoroCounterText";

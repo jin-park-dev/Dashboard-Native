@@ -49,9 +49,9 @@ export default {
   },
 
   countdownTimer: {
-    seconds: 0,
+    seconds: 1500,
     start_time : 0,
-    status: 'paused',
+    status: 'ready',
     decrement_interval: 0
   },
 
