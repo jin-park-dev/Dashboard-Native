@@ -1,6 +1,6 @@
 import initialState from './initialState'
 import * as types from '../actions/actionTypes'
-
+import moment from 'moment'
 
 export default function(state = initialState.countdownTimer, action) {
   switch(action.type) {
@@ -10,7 +10,7 @@ export default function(state = initialState.countdownTimer, action) {
         {},
         state,
         {
-          start_time : action.payload,
+          start_time : moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
           seconds : action.payload,
           status : 'counting down'
         }
@@ -32,7 +32,6 @@ export default function(state = initialState.countdownTimer, action) {
           status: 'finished' }
       );
     case types.RESET_TIMER:
-      console.log("RESET_TIMER REDUCER")
       return initialState.countdownTimer;
     case types.TICK:
       return Object.assign(

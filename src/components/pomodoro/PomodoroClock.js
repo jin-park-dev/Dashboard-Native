@@ -6,6 +6,7 @@ import { createRecordAndRefreshPomoCount } from "../../actions/action_Record";
 
 
 import BlinkView from 'react-native-blink-view'
+import moment from "moment";
 
 // const PomodoroClock = ({ onPress }) => {
 //   const { buttonStyle, textStyle } = styles;
@@ -86,19 +87,45 @@ class PomodoroClock extends Component {
     }
   }
 
+  uploadPomodoro() {
+    const { start_time, end_time } = this.props.countdownTimer;
+    const current_task = this.props.tasks.filter((task) => {
 
+      if (parseInt(task.id)==parseInt(this.props.selectedTask)) {
+        return task.name
+      }
+    });
+
+    const task_name = current_task[0].name;
+
+    console.log(current_task)
+    console.log(task_name)
+
+    let data = {
+      start_time: start_time,
+      end_time : moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
+      task: parseInt(this.props.selectedTask),
+      task_name: task_name,
+      type: "Pomodoro",
+      // comment: state_data.comment,
+    };
+    console.log(data)
+
+    this.props.createRecordAndRefreshPomoCount(data)
+  }
 
   onButtonPress() {
     const { status } = this.props.countdownTimer;
     console.log("on_press()")
+    console.log(this.props.selectedTask)
+    console.log(this.props.tasks)
 
     if (status === 'ready') {
       this.startTimer()
     } else if (status === 'finished') {
-      console.log("RESET_TIMER onpress");
       // Upload and reset timer
-      this.props.countdownTimerReset()
-      // createRecordAndRefreshPomoCount
+      this.props.countdownTimerReset();
+      this.uploadPomodoro();
 
     }
 
@@ -147,14 +174,15 @@ function mapDispatchToProps(dispatch) {
     countdownTimerStart: () => dispatch(countdownTimerStart()),
     countdownTimerFinished: () => dispatch(countdownTimerFinished()),
     countdownTimerReset: () => dispatch(countdownTimerReset()),
-    createRecordAndRefreshPomoCount: () => dispatch(createRecordAndRefreshPomoCount()),
+    createRecordAndRefreshPomoCount: (data) => dispatch(createRecordAndRefreshPomoCount(data)),
   };
 }
 
 function mapStateToProps(state) {
   return {
     countdownTimer: state.countdownTimer,
-    // pomodoroLoading: state.stats.loading.pomodoro,
+    selectedTask: state.pomodoroPickerForm.selectedTask,
+    tasks: state.taskList.tasks,
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(PomodoroClock);
