@@ -1,13 +1,12 @@
 import React from 'react';
 import { Text, TouchableOpacity } from 'react-native';
 
-const PomodoroClock = ({ onPress, children }) => {
+const PomodoroClock = ({ onPress }) => {
   const { buttonStyle, textStyle } = styles;
 
   return (
     <TouchableOpacity onPress={onPress} style={buttonStyle}>
       <Text style={textStyle}>
-        {children}
         25 : 00
       </Text>
     </TouchableOpacity>

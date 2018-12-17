@@ -46,7 +46,15 @@ export default {
   pomodoroPickerForm: {
     tasks: [],
     selectedTask: '',
-  }
+  },
+
+  countdownTimer: {
+    seconds: 0,
+    start_time : 0,
+    status: 'paused',
+    decrement_interval: 0
+  },
+
 }
 
 /*

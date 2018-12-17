@@ -5,6 +5,7 @@ import ProjectReducer from "./reducer_Project";
 import RecordReducer from "./reducer_Record";
 import StatsReducer from "./reducer_Stats";
 import PomodoroPickerFormReducer from "./reducer_PomodoroPickerForm";
+import CountdownTimerReducer from "./reducer_CountdownTimer";
 
 const rootReducer = combineReducers({
   kanbanBoard: KanbanBoardReducer,
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
   record: RecordReducer,
   stats: StatsReducer,
   pomodoroPickerForm: PomodoroPickerFormReducer,
+  countdownTimer: CountdownTimerReducer,
 });
 
 export default rootReducer;
