@@ -3,19 +3,22 @@ import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Card, CardSection, Input, Button, Spinner } from './common';
 
+import { auth } from "../actions";
+
 class LoginFormContainer extends Component {
-  onEmailChange(text) {
-    // this.props.emailChanged(text);
+
+  state = {
+    username: "",
+    password: "",
   }
 
-  onPasswordChange(text) {
-    // this.props.passwordChanged(text);
+  onPasswordChange(value) {
+    this.setState({password: value})
   }
 
   onButtonPress() {
-    const { email, password } = this.props;
-
-    // this.props.loginUser({ email, password });
+    const { username, password } = this.state;
+    this.props.login(username, password);
   }
 
   renderButton() {
@@ -37,8 +40,7 @@ class LoginFormContainer extends Component {
           <Input
             label="Email"
             placeholder="email@gmail.com"
-            onChangeText={this.onEmailChange.bind(this)}
-            value="temp..."
+            onChangeText={value => this.setState({username: value})}
           />
         </CardSection>
 
@@ -48,13 +50,16 @@ class LoginFormContainer extends Component {
             label="Password"
             placeholder="password"
             onChangeText={this.onPasswordChange.bind(this)}
-            value="temp..."
           />
         </CardSection>
 
-        <Text style={styles.errorTextStyle}>
-          {/*{this.props.error}*/}
-        </Text>
+        {this.props.errors.length > 0 && (
+          <Text style={styles.errorTextStyle}>
+            {this.props.errors.map(error => (
+              <Text key={error.field}>{error.message}</Text>
+            ))}
+          </Text>
+        )}
 
         <CardSection>
           {this.renderButton()}
@@ -81,14 +86,25 @@ const styles = {
   }
 };
 
-// const mapStateToProps = ({ auth }) => {
-//   const { email, password, error, loading } = auth;
-//
-//   return { email, password, error, loading };
-// };
-//
-// export default connect(mapStateToProps, {
-//   emailChanged, passwordChanged, loginUser
-// })(LoginForm);
+const mapStateToProps = state => {
+  let errors = [];
+  if (state.auth.errors) {
+    errors = Object.keys(state.auth.errors).map(field => {
+      return {field, message: state.auth.errors[field]};
+    });
+  }
+  return {
+    errors,
+    isAuthenticated: state.auth.isAuthenticated
+  };
+}
 
-export default LoginFormContainer;
+const mapDispatchToProps = dispatch => {
+  return {
+    login: (username, password) => {
+      return dispatch(auth.login(username, password));
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginFormContainer);
