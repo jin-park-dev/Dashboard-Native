@@ -15,7 +15,7 @@ class RouterDrawerComponent extends Component {
   }
 
   renderSidebar() {
-    if (this.props.isAuthenticated) {
+    if (!this.props.isAuthenticated) {
       return (
         <>
           <View style={styles.buttonContainer}>
@@ -33,7 +33,7 @@ class RouterDrawerComponent extends Component {
         )
     }
 
-    if (!this.props.isAuthenticated) {
+    if (this.props.isAuthenticated) {
       return (
         <>
           <View style={styles.buttonContainer}>

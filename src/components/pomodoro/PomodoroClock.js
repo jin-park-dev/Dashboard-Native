@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity } from 'react-native';
+import { Text, TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { countdownTimerTick, countdownTimerStop, countdownTimerStart, countdownTimerFinished, countdownTimerReset } from "../../actions/action_CountdownTimer"
 import { createRecordAndRefreshPomoCount } from "../../actions/action_Record";
@@ -115,19 +115,32 @@ class PomodoroClock extends Component {
   }
 
   onButtonPress() {
-    const { status } = this.props.countdownTimer;
-    console.log("on_press()")
-    console.log(this.props.selectedTask)
-    console.log(this.props.tasks)
 
-    if (status === 'ready') {
-      this.startTimer()
-    } else if (status === 'finished') {
-      // Upload and reset timer
-      this.props.countdownTimerReset();
-      this.uploadPomodoro();
+    Alert.alert(
+      'Alert Title',
+      'My Alert Msg',
+      [
+        {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+        {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+        {text: 'OK', onPress: () => console.log('OK Pressed')},
+      ],
+      { cancelable: false }
+    )
 
-    }
+
+    // const { status } = this.props.countdownTimer;
+    // console.log("on_press()")
+    // console.log(this.props.selectedTask)
+    // console.log(this.props.tasks)
+    //
+    // if (status === 'ready') {
+    //   this.startTimer()
+    // } else if (status === 'finished') {
+    //   // Upload and reset timer
+    //   this.props.countdownTimerReset();
+    //   this.uploadPomodoro();
+    //
+    // }
 
   }
 
