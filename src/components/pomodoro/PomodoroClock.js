@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
-import { Text, TouchableOpacity, Alert } from 'react-native';
+import { Text, View, TouchableOpacity, Alert } from 'react-native';
 import { connect } from 'react-redux';
 import { countdownTimerTick, countdownTimerStop, countdownTimerStart, countdownTimerFinished, countdownTimerReset } from "../../actions/action_CountdownTimer"
 import { createRecordAndRefreshPomoCount } from "../../actions/action_Record";
 
+import { Icon } from "react-native-elements";
 
 import BlinkView from 'react-native-blink-view'
 import moment from "moment";
+import {Button} from "../common";
 
 // const PomodoroClock = ({ onPress }) => {
 //   const { buttonStyle, textStyle } = styles;
@@ -49,7 +51,16 @@ const styles = {
     // marginLeft: 5,
     // marginRight: 5,
     marginTop: 10,
-  }
+  },
+  finishButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  finishButtonStyle: {
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: '#7f80f8',
+  },
 };
 
 
@@ -66,7 +77,7 @@ class PomodoroClock extends Component {
     // this.tick = this.tick.bind(this);
     this.startTimer = this.startTimer.bind(this);
     // this.cancelTimer = this.cancelTimer.bind(this);
-    this.onButtonPress = this.onButtonPress.bind(this);
+    this.onButtonTimerPress= this.onButtonTimerPress.bind(this);
     this.renderTime = this.renderTime.bind(this);
   }
 
@@ -84,6 +95,8 @@ class PomodoroClock extends Component {
       // console.log("this below 0 now finished!")
       clearInterval(this.timer);
       this.props.countdownTimerFinished();
+    } else if (this.props.countdownTimer.status === 'ready') {
+      clearInterval(this.timer);
     }
   }
 
@@ -114,34 +127,56 @@ class PomodoroClock extends Component {
     this.props.createRecordAndRefreshPomoCount(data)
   }
 
-  onButtonPress() {
+  onButtonTimerUploadPress() {
+    // Upload and reset timer
+    this.props.countdownTimerReset();
+    this.uploadPomodoro();
+  }
 
+  onButtonTimerDiscardPress() {
     Alert.alert(
-      'Alert Title',
-      'My Alert Msg',
+      'Discard Pomodoro',
+      'Are you sure you want to discard pomodoro?',
       [
-        {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+        // {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
         {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
-        {text: 'OK', onPress: () => console.log('OK Pressed')},
+        {text: 'OK', onPress: () => this.props.countdownTimerReset()},
       ],
       { cancelable: false }
     )
+  }
 
+  onButtonTimerPress() {
 
-    // const { status } = this.props.countdownTimer;
+    const { status } = this.props.countdownTimer;
     // console.log("on_press()")
     // console.log(this.props.selectedTask)
     // console.log(this.props.tasks)
-    //
-    // if (status === 'ready') {
-    //   this.startTimer()
-    // } else if (status === 'finished') {
-    //   // Upload and reset timer
-    //   this.props.countdownTimerReset();
-    //   this.uploadPomodoro();
-    //
-    // }
+    console.log('status: before button')
+    console.log(status)
 
+    if (status === 'running') {
+      Alert.alert(
+        'Reset timer?',
+        'Are you sure you want to reset the timer?',
+        [
+          // {text: 'Ask me later', onPress: () => console.log('Ask me later pressed')},
+          {text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},
+          {text: 'OK', onPress: () => this.props.countdownTimerReset()},
+        ],
+        { cancelable: false }
+      )
+    } else if (status === 'ready') {
+      this.startTimer()
+    }
+
+    else if (status === 'finished') {
+      // Now handled by seperate button.
+
+      // Upload and reset timer
+      // this.props.countdownTimerReset();
+      // this.uploadPomodoro();
+    }
   }
 
   // Adds 0 to start. Fixes time that looks like 25:0 instead of 25:00.
@@ -160,10 +195,38 @@ class PomodoroClock extends Component {
   }
 
   renderTime() {
-    const { buttonStyle, textStyle } = styles;
+    const { finishButtonContainer, textStyle, finishButtonStyle } = styles;
 
     if (this.props.countdownTimer.status === 'finished') {
-      return <BlinkView blinking={true} delay={300}><Text style={textStyle}>Upload</Text></BlinkView>
+      return (
+        <View>
+          {/*<BlinkView blinking={false} delay={300}>*/}
+            {/*<Text style={textStyle}>Upload</Text>*/}
+          {/*</BlinkView>*/}
+          <View>
+            <Text style={textStyle} >Upload</Text>
+          </View>
+          <View style={finishButtonContainer}>
+            <TouchableOpacity onPress={this.onButtonTimerUploadPress.bind(this)} style={finishButtonStyle}>
+              <Icon
+                name='check'
+                type='material-community'
+                color='#3ace3a'
+                size={50}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={this.onButtonTimerDiscardPress.bind(this)} style={finishButtonStyle}>
+              <Icon
+                name='trash-can'
+                type='material-community'
+                color='#ff6961'
+                size={50}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
+      )
     }
     return <Text style={textStyle}>{this.hhmmss(this.props.countdownTimer.seconds)}</Text>
   }
@@ -172,7 +235,7 @@ class PomodoroClock extends Component {
     const { buttonStyle, textStyle } = styles;
 
     return (
-      <TouchableOpacity onPress={this.onButtonPress} style={buttonStyle}>
+      <TouchableOpacity onPress={this.onButtonTimerPress} style={buttonStyle}>
         {this.renderTime()}
       </TouchableOpacity>
     )

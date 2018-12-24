@@ -19,6 +19,7 @@ export const countdownTimerFinished = () => {
 };
 
 export const countdownTimerReset= () => {
+  console.log("Action - countdownTimerReset")
   return {
     type: types.RESET_TIMER,
   };
@@ -27,6 +28,6 @@ export const countdownTimerReset= () => {
 export const countdownTimerStart = () => {
   return {
     type: types.START_TIMER,
-    payload: 2,
+    payload: 1500,
   };
 };

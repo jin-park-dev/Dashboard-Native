@@ -5,14 +5,14 @@ import moment from 'moment'
 export default function(state = initialState.countdownTimer, action) {
   switch(action.type) {
     case types.START_TIMER :
-      console.log(action)
+      // console.log(action)
       return Object.assign(
         {},
         state,
         {
           start_time : moment(Date.now()).format("YYYY-MM-DD HH:mm:ss"),
           seconds : action.payload,
-          status : 'counting down'
+          status : 'running'
         }
       );
     case types.STOP_TIMER:
