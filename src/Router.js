@@ -19,7 +19,7 @@ const RouterDrawerIconComponent = () => {
         // reverse
         name='menu'
         // type='ionicon'
-        // color='#517fa4'
+        color='#2C2727'
       />
     </View>
   );

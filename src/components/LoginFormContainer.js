@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 import { connect } from 'react-redux';
 import { Card, CardSection, Input, Button, Spinner } from './common';
-import { Icon } from 'react-native-elements'
 
 import { auth } from "../actions";
 

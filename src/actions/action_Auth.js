@@ -103,8 +103,15 @@ export const register = (username, password) => {
 
 export const logout = () => {
   console.log("action auth: logout called")
+  Actions.login()
   return (dispatch, getState) => {
     let headers = {"Content-Type": "application/json"};
+
+    // Add token for logoutr
+    const token = getState().auth.token;
+    if (token) {
+      headers["Authorization"] = `Token ${token}`;
+    }
 
     return fetch(`${BASEURL}/api/auth/logout/`, {headers, body: "", method: "POST"})
       .then(res => {
