@@ -17,7 +17,6 @@ const rootReducer = combineReducers({
   pomodoroPickerForm: PomodoroPickerFormReducer,
   countdownTimer: CountdownTimerReducer,
   auth: AuthReducer,
-
 });
 
 export default rootReducer;

@@ -1,16 +1,10 @@
-import React, { Component } from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import React, { Component, Fragment } from 'react';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import {connect} from "react-redux";
 import { Actions } from 'react-native-router-flux';
 import {Button, Card, CardSection} from "./components/common";
 
 import { auth } from "./actions";
-
-// const RouterDrawerComponent = () => {
-//   return (
-//     <Text>Drawer item here.</Text>
-//   )
-// };
 
 class RouterDrawerComponent extends Component {
 
@@ -18,13 +12,30 @@ class RouterDrawerComponent extends Component {
     this.props.logout()
   }
 
+  renderSidebar() {
+    if (!this.props.isAuthenticated) {
+      return (
+        <>
+          <Button style={styles.buttonStyle} onPress={Actions.login}>Login</Button>
+        </>
+        )
+    }
+
+    if (this.props.isAuthenticated) {
+      return (
+        <>
+          <Button style={styles.buttonStyle} onPress={Actions.pomodoro}>Pomodoro</Button>
+          <Button style={styles.buttonStyle} onPress={this.onPressLogout.bind(this)}>Logout</Button>
+        </>
+      )
+    }
+  }
+
   render() {
     return(
       <View style={styles.containerStyle}>
-        <Text>Drawer item here.</Text>
-        <Button style={styles.buttonStyle} onPress={Actions.login}>Login</Button>
-        <Button style={styles.buttonStyle} onPress={Actions.pomodoro}>Pomodoro</Button>
-        <Button style={styles.buttonStyle} onPress={this.onPressLogout.bind(this)}>Logout</Button>
+        <Text>Dashboard Native</Text>
+        {this.renderSidebar()}
       </View>
     )
   }
@@ -57,7 +68,9 @@ const styles = {
 
 const mapStateToProps = state => {
     return {
-
+      isAuthenticated: state.auth.isAuthenticated,
+      // user: state.auth,
+      isLoading: state.auth.isLoading,
     }
 }
 

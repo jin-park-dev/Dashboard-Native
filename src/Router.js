@@ -4,6 +4,26 @@ import { Scene, Router, Drawer, Actions } from 'react-native-router-flux';
 import PomodoroContainer from './components/PomodoroContainer';
 import LoginFormContainer from "./components/LoginFormContainer";
 import RouterDrawerComponent from "./RouterDrawerComponent";
+import {Image, View} from "react-native";
+import { Icon } from 'react-native-elements'
+
+
+const RouterDrawerIconComponent = () => {
+  return (
+    <View>
+      {/*<Image*/}
+        {/*source={require('./arq-menu-128.png')}*/}
+        {/*// style={{ width: 84, height: 27 }}*/}
+      {/*/>*/}
+      <Icon
+        // reverse
+        name='menu'
+        // type='ionicon'
+        // color='#517fa4'
+      />
+    </View>
+  );
+};
 
 const RouterComponent = () => {
   return (
@@ -15,12 +35,14 @@ const RouterComponent = () => {
       >
         <Drawer
           hideNavBar
-          key="scene4"
-          // drawerImage={Images.menuIcon}
-          contentComponent={RouterDrawerComponent}
-          // drawerWidth={styles.drawerWidth}
-          // drawerPosition="right"
+          key="drawer"
+          drawerIcon={RouterDrawerIconComponent}
+          // drawerImage={require('./arq-menu-128.png')}
 
+          contentComponent={RouterDrawerComponent}
+
+          // drawerWidth={100}
+          // drawerPosition="right"
         >
           <Scene key="auth"
 
